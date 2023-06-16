@@ -1,0 +1,824 @@
+definitions:
+  author.Request:
+    properties:
+      fullName:
+        type: string
+      pseudonym:
+        type: string
+      specialty:
+        type: string
+    type: object
+  book.Request:
+    properties:
+      authors:
+        items:
+          type: string
+        type: array
+      genre:
+        type: string
+      id:
+        type: string
+      isbn:
+        type: string
+      name:
+        type: string
+    required:
+    - authors
+    - genre
+    - isbn
+    - name
+    type: object
+  category.Request:
+    properties:
+      name:
+        type: string
+      parentID:
+        type: string
+    type: object
+  member.Request:
+    properties:
+      books:
+        items:
+          type: string
+        type: array
+      fullName:
+        type: string
+      id:
+        type: string
+    required:
+    - books
+    - fullName
+    type: object
+  product.Request:
+    properties:
+      barcode:
+        type: string
+      brand:
+        type: string
+      category_id:
+        type: string
+      country:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      measure:
+        type: string
+      name:
+        type: string
+    type: object
+  response.Object:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /authors:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of authors from the database
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/author.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Add a new author to the database
+      tags:
+      - authors
+  /authors/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Delete the author from the database
+      tags:
+      - authors
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Read the author from the database
+      tags:
+      - authors
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/author.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Update the author in the database
+      tags:
+      - authors
+  /books:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of books from the database
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/book.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Add a new book to the database
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Delete the book from the database
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Read the book from the database
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/book.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Update the book in the database
+      tags:
+      - books
+  /books/{id}/authors:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of authors from the database
+      tags:
+      - books
+  /categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of categories from the database
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/category.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Add a new category to the database
+      tags:
+      - categories
+  /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Delete the category from the database
+      tags:
+      - categories
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Read the category from the database
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/category.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Update the category in the database
+      tags:
+      - categories
+  /members:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of members from the database
+      tags:
+      - members
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/member.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Add a new member to the database
+      tags:
+      - members
+  /members/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Delete the member from the database
+      tags:
+      - members
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Read the member from the database
+      tags:
+      - members
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/member.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Update the member in the database
+      tags:
+      - members
+  /members/{id}/books:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of books from the database
+      tags:
+      - members
+  /products:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.Object'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: List of products from the database
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/product.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Add a new product to the database
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Delete the product from the database
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Read the product from the database
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: path param
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body param
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/product.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Object'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Object'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Object'
+      summary: Update the product in the database
+      tags:
+      - products
+swagger: "2.0"

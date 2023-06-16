@@ -1,0 +1,4 @@
+BEGIN;
+    DROP TABLE IF EXISTS categories CASCADE;
+    DROP TABLE IF EXISTS products CASCADE;
+END;

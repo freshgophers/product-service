@@ -1,0 +1,27 @@
+-- EXTENSIONS --
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- TABLES --
+
+CREATE TABLE IF NOT EXISTS categories (
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id          UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
+    parent_id   VARCHAR NULL,
+    name        VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id          UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
+    category_id VARCHAR NOT NULL,
+    name        VARCHAR NOT NULL,
+    description VARCHAR NOT NULL,
+    measure     VARCHAR NOT NULL,
+    image_url   VARCHAR NULL,
+    country     VARCHAR NULL,
+    barcode     VARCHAR NULL,
+    brand       VARCHAR NULL
+);
