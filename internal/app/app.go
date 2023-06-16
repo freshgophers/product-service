@@ -16,8 +16,6 @@ import (
 	"product-service/internal/handler"
 	"product-service/internal/repository"
 	"product-service/internal/service/catalogue"
-	"product-service/internal/service/library"
-	"product-service/internal/service/subscription"
 	"product-service/pkg/log"
 	"product-service/pkg/server"
 )
@@ -46,23 +44,6 @@ func Run() {
 	}
 	defer repositories.Close()
 
-	libraryService, err := library.New(
-		library.WithAuthorRepository(repositories.Author),
-		library.WithBookRepository(repositories.Book),
-	)
-	if err != nil {
-		logger.Error("ERR_INIT_LIBRARY_SERVICE", zap.Error(err))
-		return
-	}
-
-	subscriptionService, err := subscription.New(
-		subscription.WithMemberRepository(repositories.Member),
-		subscription.WithLibraryService(libraryService))
-	if err != nil {
-		logger.Error("ERR_INIT_SUBSCRIPTION_SERVICE", zap.Error(err))
-		return
-	}
-
 	catalogueService, err := catalogue.New(
 		catalogue.WithCategoryRepository(repositories.Category),
 		catalogue.WithProductRepository(repositories.Product),
@@ -76,10 +57,8 @@ func Run() {
 
 	handlers, err := handler.New(
 		handler.Dependencies{
-			Configs:             configs,
-			LibraryService:      libraryService,
-			SubscriptionService: subscriptionService,
-			CatalogueService:    catalogueService,
+			Configs:          configs,
+			CatalogueService: catalogueService,
 		},
 		handler.WithHTTPHandler())
 	if err != nil {

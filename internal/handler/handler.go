@@ -9,16 +9,12 @@ import (
 	"product-service/internal/config"
 	"product-service/internal/handler/http"
 	"product-service/internal/service/catalogue"
-	"product-service/internal/service/library"
-	"product-service/internal/service/subscription"
 	"product-service/pkg/server/router"
 )
 
 type Dependencies struct {
-	Configs             config.Configs
-	LibraryService      *library.Service
-	SubscriptionService *subscription.Service
-	CatalogueService    *catalogue.Service
+	Configs          config.Configs
+	CatalogueService *catalogue.Service
 }
 
 // Configuration is an alias for a function that will take in a pointer to a Handler and modify it
@@ -70,16 +66,10 @@ func WithHTTPHandler() Configuration {
 			httpSwagger.URL(swaggerURL.String()),
 		))
 
-		authorHandler := http.NewAuthorHandler(h.dependencies.LibraryService)
-		bookHandler := http.NewBookHandler(h.dependencies.LibraryService)
-		memberHandler := http.NewMemberHandler(h.dependencies.SubscriptionService)
 		productHandler := http.NewProductHandler(h.dependencies.CatalogueService)
 		categoryHandler := http.NewCategory(h.dependencies.CatalogueService)
 
 		h.HTTP.Route("/api/v1", func(r chi.Router) {
-			r.Mount("/authors", authorHandler.Routes())
-			r.Mount("/books", bookHandler.Routes())
-			r.Mount("/members", memberHandler.Routes())
 			r.Mount("/products", productHandler.Routes())
 			r.Mount("/categories", categoryHandler.Routes())
 		})

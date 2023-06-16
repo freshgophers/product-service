@@ -1,10 +1,7 @@
 package repository
 
 import (
-	"product-service/internal/domain/author"
-	"product-service/internal/domain/book"
 	"product-service/internal/domain/category"
-	"product-service/internal/domain/member"
 	"product-service/internal/domain/product"
 	"product-service/internal/repository/memory"
 	"product-service/internal/repository/postgres"
@@ -18,9 +15,6 @@ type Configuration func(r *Repository) error
 type Repository struct {
 	postgres *store.Database
 
-	Author   author.Repository
-	Book     book.Repository
-	Member   member.Repository
 	Product  product.Repository
 	Category category.Repository
 }
@@ -54,11 +48,7 @@ func (r *Repository) Close() {
 func WithMemoryStore() Configuration {
 	return func(s *Repository) (err error) {
 		// Create the memory store, if we needed parameters, such as connection strings they could be inputted here
-		s.Author = memory.NewAuthorRepository()
-		s.Book = memory.NewBookRepository()
-		s.Member = memory.NewMemberRepository()
 		s.Category = memory.NewCategoryRepository()
-		s.Product = memory.NewProductRepository()
 
 		return
 	}
@@ -78,9 +68,6 @@ func WithPostgresStore(schema, dataSourceName string) Configuration {
 			return
 		}
 
-		s.Author = postgres.NewAuthorRepository(s.postgres.Client)
-		s.Book = postgres.NewBookRepository(s.postgres.Client)
-		s.Member = postgres.NewMemberRepository(s.postgres.Client)
 		s.Category = postgres.NewCategoryRepository(s.postgres.Client)
 		s.Product = postgres.NewProductRepository(s.postgres.Client)
 		return
